@@ -1,28 +1,91 @@
 <template>
-  <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
-  </div>
+    <div id="app">
+        <header class="header">
+            <div class="header-logo">PasswordWallet</div>
+            <div class="header-page">Your databases</div>
+        </header>
+        <div class="new-db" v-if="supportWebCrypto()">Create new</div>
+        <div class="error-msg" v-else>Your browser does not support Web Crypto API, update it to use the App.</div>
+    </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
-
 export default {
-  name: 'app',
-  components: {
-    HelloWorld
-  }
+    name: 'app',
+    methods: {
+        supportWebCrypto() {
+            return window.crypto && window.crypto.subtle;
+        },
+    },
+    components: {
+
+    },
 }
 </script>
 
 <style>
+html {
+    box-sizing: border-box;
+    font-size: 10px;
+}
+
+*,
+*:before,
+*:after {
+    box-sizing: inherit;
+}
+
+body {
+    font-size: 1.6rem;
+    margin: 0;
+    font-family: 'Montserrat', sans-serif;
+    color: #333;
+}
+
 #app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
+    margin: 0 auto;
+    padding: 0 .5rem;
+    max-width: 50rem;
+}
+
+.header {
+    position: relative;
+    margin-bottom: 2rem;
+}
+
+.header-logo {
+    padding: 2.5rem 2rem 2rem;
+    border-radius: 0 0 1rem 1rem;
+    z-index: 10;
+    position: absolute;
+    background: #fff;
+    width: calc(100% - 1rem);
+    margin: 0 .5rem;
+}
+
+.header-page {
+    border-radius: 0 0 1.5rem 1.5rem;
+    background: linear-gradient(45deg, #ffcc64, #fd5889);
+    padding: 8rem 0 2rem;
+    text-align: center;
+    color: #fff;
+    margin-top: -1rem;
+    font-weight: 600;
+}
+
+.error-msg {
+    color: #bf517d;
+    background: #f6d7e3;
+    border-radius: 1rem;
+    padding: 2rem;
+}
+
+.new-db {
+    background: linear-gradient(#3ec59f, #39bf99);
+    padding: 1.5rem;
+    margin-top: 2rem;
+    border-radius: 1rem;
+    text-align: center;
+    color: #fff;
 }
 </style>
