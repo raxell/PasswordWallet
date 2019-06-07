@@ -1,0 +1,33 @@
+.form-group {
+    margin-bottom: 2rem;
+}
+
+.form-desc {
+    display: block;
+    margin-bottom: 1rem;
+}
+
+.form-control {
+    width: 100%;
+    padding: 2rem;
+    border: 0;
+    box-shadow: 0 0 1.5rem rgba(0, 0, 0, .1);
+    border-radius: 1rem;
+}
+
+.form-control:focus {
+    box-shadow: 0 0 1.5rem rgba(116, 189, 255, .5);
+}
+
+.form-control.mod-icon {
+    padding-right: 5rem;
+}
+
+.form-icon {
+    color: #aaa;
+    cursor: pointer;
+    position: absolute;
+    margin: 1.5rem 0 0 -4rem;
+    width: 2rem;
+}
+
