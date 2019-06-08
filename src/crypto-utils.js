@@ -1,13 +1,13 @@
 /**
  * Wrapper functions around Web Crypto API
  */
+const textEncoder = new TextEncoder();
+const textDecoder = new TextDecoder();
 
-export function randomBytes(bytes) {
-    const salt = new Uint8Array(bytes);
-    crypto.getRandomValues(salt);
+const bufferToBase64 = (buf) => btoa(String.fromCharCode(...new Uint8Array(buf)));
+const base64ToBuffer = (str) => Uint8Array.from(atob(str), c => c.charCodeAt(0));
 
-    return salt;
-}
+export const randomBytes = (bytes) => bufferToBase64(crypto.getRandomValues(new Uint8Array(bytes)));
 
 export const generateSalt = () => randomBytes(32);
 export const generateIv = () => randomBytes(12);
@@ -15,7 +15,7 @@ export const generateIv = () => randomBytes(12);
 async function deriveKey(password, salt, isEncryptionKey) {
     const passwordKey = await crypto.subtle.importKey(
         'raw',
-        (new TextEncoder()).encode(password),
+        textEncoder.encode(password),
         { name: 'PBKDF2' },
         false,
         ['deriveKey'],
@@ -23,7 +23,7 @@ async function deriveKey(password, salt, isEncryptionKey) {
 
     return crypto.subtle.deriveKey(
         {
-            salt,
+            salt: base64ToBuffer(salt),
             name: 'PBKDF2',
             hash: 'SHA-256',
             iterations: isEncryptionKey ? 2 ** 14 : 2 ** 18,
@@ -35,21 +35,33 @@ async function deriveKey(password, salt, isEncryptionKey) {
     );
 }
 
-export const deriveVerificationKey = (password, salt) => deriveKey(password, salt, false);
-export const deriveAESKey = (password, salt) => deriveKey(password, salt, true);
-
-export function encrypt(plaintext, key, iv) {
-    return crypto.subtle.encrypt(
-        { iv, name: 'AES-GCM' },
-        key,
-        (new TextEncoder()).encode(plaintext),
+export async function deriveVerificationKey(password, salt) {
+    const key = await crypto.subtle.exportKey(
+        'raw',
+        await deriveKey(password, salt, false),
     );
+
+    return bufferToBase64(key);
 }
 
-export function decrypt(ciphertext, key, iv) {
-    return crypto.subtle.decrypt(
-        { iv, name: 'AES-GCM' },
+export const deriveAESKey = (password, salt) => deriveKey(password, salt, true);
+
+export async function encrypt(plaintext, key, iv) {
+    const ciphertext = await crypto.subtle.encrypt(
+        { iv: base64ToBuffer(iv), name: 'AES-GCM' },
         key,
-        (new TextEncoder()).encode(ciphertext),
+        textEncoder.encode(plaintext),
     );
+
+    return bufferToBase64(ciphertext);
+}
+
+export async function decrypt(ciphertext, key, iv) {
+    const plaintext = await crypto.subtle.decrypt(
+        { iv: base64ToBuffer(iv), name: 'AES-GCM' },
+        key,
+        base64ToBuffer(ciphertext),
+    );
+
+    return textDecoder.decode(plaintext);
 }
