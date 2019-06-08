@@ -6,12 +6,12 @@
 
         <ul class="dbs">
             <li class="db">
-                <h2 class="db-name" @click="$emit('pageChange', 'Database')">Social</h2>
+                <h2 class="db-name" @click="$emit('pageChange', 'Database', 'social')">Social</h2>
                 <Edit2Icon class="db-action mod-edit" data-title="Edit"/>
                 <Trash2Icon class="db-action mod-delete" title="Delete"/>
             </li>
             <li class="db">
-                <h2 class="db-name" @click="$emit('pageChange', 'Database')">Social</h2>
+                <h2 class="db-name" @click="$emit('pageChange', 'Database', 'social')">Social</h2>
                 <Edit2Icon class="db-action mod-edit" title="Edit"/>
                 <Trash2Icon class="db-action mod-delete" title="Delete"/>
             </li>

@@ -10,6 +10,7 @@
 </template>
 
 <script>
+import DbStore from './db-store.js';
 import Index from './components/Index.vue';
 import Auth from './components/Auth.vue';
 import Database from './components/Database.vue';
@@ -23,14 +24,20 @@ export default {
     data: () => ({
         currentPage: '',
         title: '',
+        dbStore: DbStore(),
     }),
     methods: {
         supportWebCrypto() {
             return window.crypto && window.crypto.subtle;
         },
-        navigateTo(page) {
-            this.currentPage = page;
-            this.title = this.titleOf(page);
+        navigateTo(page, dbName) {
+            if (!dbName || this.dbStore.get(dbName)) {
+                this.currentPage = page;
+                this.title = this.titleOf(page);
+            } else {
+                this.currentPage = 'Auth';
+                this.title = this.titleOf('Auth');
+            }
         },
         titleOf(page) {
             return {
