@@ -1,7 +1,7 @@
 <template>
     <div id="app">
         <header class="header">
-            <div class="header-logo">PasswordWallet</div>
+            <div class="header-logo" @click="navigateTo('Index')">PasswordWallet</div>
             <div class="header-page">{{ title }}</div>
         </header>
         <component v-if="supportWebCrypto()" :is="currentPage" @pageChange="navigateTo"/>
@@ -88,6 +88,12 @@ body {
     background: #fff;
     width: calc(100% - 1rem);
     margin: 0 .5rem;
+    font-weight: 600;
+    cursor: pointer;
+
+    &:hover {
+        text-decoration: underline;
+    }
 }
 
 .header-page {
