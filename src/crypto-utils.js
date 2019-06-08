@@ -30,8 +30,8 @@ async function deriveKey(password, salt, isEncryptionKey) {
         },
         passwordKey,
         { name: 'AES-GCM', length: 256 },
-        isEncryptionKey,
-        isEncryptionKey ? ['encrypt', 'decrypt'] : [],
+        !isEncryptionKey,
+        isEncryptionKey ? ['encrypt', 'decrypt'] : ['wrapKey'],
     );
 }
 
