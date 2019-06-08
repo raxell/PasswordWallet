@@ -2,23 +2,32 @@
     <div id="app">
         <header class="header">
             <div class="header-logo">PasswordWallet</div>
-            <div class="header-page">Your databases</div>
+            <div class="header-page">{{ title }}</div>
         </header>
-        <div class="new-db" v-if="supportWebCrypto()">Create new</div>
+        <component v-if="supportWebCrypto()" :is="currentPage" @pageChange="updatePage"/>
         <div class="error-msg" v-else>Your browser does not support Web Crypto API, update it to use the App.</div>
     </div>
 </template>
 
 <script>
+import Index from './components/Index.vue';
+
 export default {
     name: 'app',
+    data: () => ({
+        currentPage: 'Index',
+        title: '',
+    }),
     methods: {
         supportWebCrypto() {
             return window.crypto && window.crypto.subtle;
         },
+        updatePage({ title }) {
+            this.title = title;
+        },
     },
     components: {
-
+        Index,
     },
 }
 </script>
@@ -80,12 +89,4 @@ body {
     padding: 2rem;
 }
 
-.new-db {
-    background: linear-gradient(#3ec59f, #39bf99);
-    padding: 1.5rem;
-    margin-top: 2rem;
-    border-radius: 1rem;
-    text-align: center;
-    color: #fff;
-}
 </style>
