@@ -1,10 +1,10 @@
 .form-group {
     margin-bottom: 3rem;
-}
 
-.form-group.mod-action {
-    text-align: right;
-    margin-top: 4rem;
+    &.mod-action {
+        text-align: right;
+        margin-top: 4rem;
+    }
 }
 
 .form-control-desc {
@@ -18,14 +18,14 @@
     border: 0;
     box-shadow: 0 0 1.5rem rgba(0, 0, 0, .1);
     border-radius: 1rem;
-}
 
-.form-control:focus {
-    box-shadow: 0 0 1.5rem rgba(116, 189, 255, .5);
-}
+    &:focus {
+        box-shadow: 0 0 1.5rem rgba(116, 189, 255, .5);
+    }
 
-.form-control.mod-icon {
-    padding-right: 5rem;
+    &.mod-icon {
+        padding-right: 5rem;
+    }
 }
 
 .form-control-icon {
