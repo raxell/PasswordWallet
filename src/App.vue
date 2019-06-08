@@ -12,6 +12,7 @@
 <script>
 import Index from './components/Index.vue';
 import Auth from './components/Auth.vue';
+import Database from './components/Database.vue';
 import DatabaseEdit from './components/DatabaseEdit.vue';
 
 export default {
@@ -35,6 +36,7 @@ export default {
             return {
                 'Index': 'Your Databases',
                 'Auth': 'Unlock Database',
+                'Database': '...',
                 'DatabaseEdit': 'Create new database',
             }[page];
         }
@@ -42,6 +44,7 @@ export default {
     components: {
         Index,
         Auth,
+        Database,
         DatabaseEdit,
     },
 }

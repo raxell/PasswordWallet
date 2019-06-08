@@ -1,16 +1,22 @@
 <template>
-    <ul class="dbs">
-        <li class="db">
-            <h2 class="db-name">Social</h2>
-            <Edit2Icon class="db-action mod-edit" data-title="Edit"/>
-            <Trash2Icon class="db-action mod-delete" title="Delete"/>
-        </li>
-        <li class="db">
-            <h2 class="db-name">Social</h2>
-            <Edit2Icon class="db-action mod-edit" title="Edit"/>
-            <Trash2Icon class="db-action mod-delete" title="Delete"/>
-        </li>
-    </ul>
+    <div class="main">
+        <div class="form-group mod-action">
+            <button class="form-action" @click="$emit('pageChange', 'DatabaseEdit')">Create new</button>
+        </div>
+
+        <ul class="dbs">
+            <li class="db">
+                <h2 class="db-name" @click="$emit('pageChange', 'Database')">Social</h2>
+                <Edit2Icon class="db-action mod-edit" data-title="Edit"/>
+                <Trash2Icon class="db-action mod-delete" title="Delete"/>
+            </li>
+            <li class="db">
+                <h2 class="db-name" @click="$emit('pageChange', 'Database')">Social</h2>
+                <Edit2Icon class="db-action mod-edit" title="Edit"/>
+                <Trash2Icon class="db-action mod-delete" title="Delete"/>
+            </li>
+        </ul>
+    </div>
 </template>
 
 <script>
