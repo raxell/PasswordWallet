@@ -1,8 +1,13 @@
 .form-group {
-    margin-bottom: 2rem;
+    margin-bottom: 3rem;
 }
 
-.form-desc {
+.form-group.mod-action {
+    text-align: right;
+    margin-top: 4rem;
+}
+
+.form-control-desc {
     display: block;
     margin-bottom: 1rem;
 }
@@ -23,11 +28,22 @@
     padding-right: 5rem;
 }
 
-.form-icon {
+.form-control-icon {
     color: #aaa;
     cursor: pointer;
     position: absolute;
     margin: 1.5rem 0 0 -4rem;
     width: 2rem;
+}
+
+.form-action {
+    background: linear-gradient(#3ec59f, #39bf99);
+    padding: 1.5rem;
+    border-radius: 1rem;
+    text-align: center;
+    color: #fff;
+    border: 0;
+    cursor: pointer;
+    font-weight: 600;
 }
 

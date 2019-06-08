@@ -11,6 +11,7 @@
 
 <script>
 import Index from './components/Index.vue';
+import Auth from './components/Auth.vue';
 
 export default {
     name: 'app',
@@ -28,6 +29,7 @@ export default {
     },
     components: {
         Index,
+        Auth,
     },
 }
 </script>
