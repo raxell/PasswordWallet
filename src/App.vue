@@ -12,6 +12,7 @@
 <script>
 import Index from './components/Index.vue';
 import Auth from './components/Auth.vue';
+import DatabaseEdit from './components/DatabaseEdit.vue';
 
 export default {
     name: 'app',
@@ -30,6 +31,7 @@ export default {
     components: {
         Index,
         Auth,
+        DatabaseEdit,
     },
 }
 </script>
