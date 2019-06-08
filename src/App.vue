@@ -4,7 +4,7 @@
             <div class="header-logo">PasswordWallet</div>
             <div class="header-page">{{ title }}</div>
         </header>
-        <component v-if="supportWebCrypto()" :is="currentPage" @pageChange="updatePage"/>
+        <component v-if="supportWebCrypto()" :is="currentPage" @pageChange="navigateTo"/>
         <div class="error-msg" v-else>Your browser does not support Web Crypto API, update it to use the App.</div>
     </div>
 </template>
@@ -16,17 +16,28 @@ import DatabaseEdit from './components/DatabaseEdit.vue';
 
 export default {
     name: 'app',
+    created() {
+        this.navigateTo('Index');
+    },
     data: () => ({
-        currentPage: 'Index',
+        currentPage: '',
         title: '',
     }),
     methods: {
         supportWebCrypto() {
             return window.crypto && window.crypto.subtle;
         },
-        updatePage({ title }) {
-            this.title = title;
+        navigateTo(page) {
+            this.currentPage = page;
+            this.title = this.titleOf(page);
         },
+        titleOf(page) {
+            return {
+                'Index': 'Your Databases',
+                'Auth': 'Unlock Database',
+                'DatabaseEdit': 'Create new database',
+            }[page];
+        }
     },
     components: {
         Index,

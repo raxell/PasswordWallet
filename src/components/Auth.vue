@@ -10,11 +10,6 @@
 import { ArrowRightIcon } from 'vue-feather-icons';
 
 export default {
-    created() {
-        this.$emit('pageChange', {
-            title: 'Unlock database',
-        });
-    },
     components: {
         ArrowRightIcon,
     },

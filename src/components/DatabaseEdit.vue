@@ -16,11 +16,7 @@
 
 <script>
 export default {
-    created() {
-        this.$emit('pageChange', {
-            title: 'Create new database',
-        });
-    }
+
 }
 </script>
 

@@ -17,11 +17,6 @@
 import { Edit2Icon, Trash2Icon } from 'vue-feather-icons';
 
 export default {
-    created() {
-        this.$emit('pageChange', {
-            title: 'Your Databases',
-        });
-    },
     components: {
         Edit2Icon,
         Trash2Icon,
