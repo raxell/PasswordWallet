@@ -67,6 +67,7 @@ export default {
                         return db.save();
                     })
                     .then(() => {
+                        this.$emit('notice', 'success', 'Database created successfully');
                         this.$emit('pageChange', 'Index');
                     })
                     .catch(() => {

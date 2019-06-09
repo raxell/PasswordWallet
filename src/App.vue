@@ -4,8 +4,18 @@
             <div class="header-logo" @click="navigateTo('Index')">PasswordWallet</div>
             <div class="header-page">{{ title }}</div>
         </header>
-        <component v-if="supportWebCrypto()" :is="currentPage" @pageChange="navigateTo"/>
-        <div class="error-msg" v-else>Your browser does not support Web Crypto API, update it to use the App.</div>
+
+        <transition name="fade">
+            <div class="notice" :class="`mod-${notice.type}`" v-if="notice">{{ notice.msg }}</div>
+        </transition>
+
+        <component
+        v-if="supportWebCrypto()"
+        :is="currentPage"
+        @notice="addNotice"
+        @pageChange="navigateTo"/>
+
+        <div class="notice mod-error" v-else>Your browser does not support Web Crypto API, update it to use the App.</div>
     </div>
 </template>
 
@@ -25,6 +35,7 @@ export default {
         currentPage: '',
         title: '',
         dbStore: DbStore(),
+        notice: null,
     }),
     methods: {
         supportWebCrypto() {
@@ -46,6 +57,13 @@ export default {
                 'Database': '...',
                 'DatabaseEdit': 'Create new database',
             }[page];
+        },
+        addNotice(type, msg) {
+            this.notice = { type, msg };
+
+            setTimeout(() => {
+                this.notice = null;
+            }, 4000);
         }
     },
     components: {
@@ -115,11 +133,33 @@ body {
     font-weight: 600;
 }
 
-.error-msg {
-    color: $color-red;
-    background: $bg-red;
+.notice {
     border-radius: 1rem;
     padding: 2rem;
+    margin-bottom: 2rem;
+
+    &.mod-error {
+        color: $color-red;
+        background: $bg-red;
+    }
+
+    &.mod-success {
+        color: $color-blue;
+        background: $bg-blue;
+    }
 }
 
+/**
+ * Transition component classes
+ */
+
+.fade-enter-active,
+.fade-leave-active {
+    transition: opacity .5s;
+}
+
+.fade-enter,
+.fade-leave-to {
+    opacity: 0;
+}
 </style>
