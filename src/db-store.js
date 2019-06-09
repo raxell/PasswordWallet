@@ -1,3 +1,5 @@
+import { Database } from './db.js';
+
 export default function DbStore(sessionExpiration = 60 * 5) {
     const dbs = new Map();
 
@@ -16,14 +18,18 @@ export default function DbStore(sessionExpiration = 60 * 5) {
 
             return db.db;
         },
-        create(name) {
-            dbs.set(name, {
-                db: {}, // @TODO: create a db instance
-                expiration: newExpiration(),
-            });
-        },
-        auth() {
-            // @TODO: try to access the diven db and add it if auth passes
+        async auth(name, password) {
+            try {
+                const db = await Database(name, password);
+                dbs.set(name, {
+                    db,
+                    expiration: newExpiration(),
+                });
+
+                return db;
+            } catch (err) {
+                return null;
+            }
         },
     }
 }
