@@ -1,5 +1,7 @@
 import * as Crypto from './crypto-utils.js';
 
+export const list = () => Object.keys(localStorage);
+
 async function initDb(password) {
     const db = {};
     db.meta = {};
@@ -15,7 +17,7 @@ async function initDb(password) {
     return db;
 }
 
-export default async function Database(name, password) {
+export async function Database(name, password) {
     const data = localStorage.getItem(name);
     const db = data ? JSON.parse(data) : await initDb(password);
     const meta = db.meta;

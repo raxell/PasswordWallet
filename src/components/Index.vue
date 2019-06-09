@@ -4,25 +4,24 @@
             <button class="form-action" @click="$emit('pageChange', 'DatabaseEdit')">Create new</button>
         </div>
 
-        <ul class="dbs">
-            <li class="db">
-                <h2 class="db-name" @click="$emit('pageChange', 'Database', 'social')">Social</h2>
-                <Edit2Icon class="db-action mod-edit" data-title="Edit"/>
-                <Trash2Icon class="db-action mod-delete" title="Delete"/>
-            </li>
-            <li class="db">
-                <h2 class="db-name" @click="$emit('pageChange', 'Database', 'social')">Social</h2>
-                <Edit2Icon class="db-action mod-edit" title="Edit"/>
-                <Trash2Icon class="db-action mod-delete" title="Delete"/>
+        <ul class="dbs" v-if="dbs.length > 0">
+            <li class="db" v-for="db in dbs" :key="db">
+                <h2 class="db-name" @click="$emit('pageChange', 'Database', db)">{{ db }}</h2>
+                <Edit2Icon class="db-action mod-edit" @click="$emit('pageChange', 'DatabaseEdit', db)" />
+                <Trash2Icon class="db-action mod-delete" />
             </li>
         </ul>
     </div>
 </template>
 
 <script>
+import * as Db from '../db.js';
 import { Edit2Icon, Trash2Icon } from 'vue-feather-icons';
 
 export default {
+    data: () => ({
+        dbs: Db.list(),
+    }),
     components: {
         Edit2Icon,
         Trash2Icon,
