@@ -57,7 +57,9 @@ export default {
 }
 </script>
 
-<style>
+<style lang="scss">
+@import './assets/variables';
+
 html {
     box-sizing: border-box;
     font-size: 10px;
@@ -114,8 +116,8 @@ body {
 }
 
 .error-msg {
-    color: #bf517d;
-    background: #f6d7e3;
+    color: $color-red;
+    background: $bg-red;
     border-radius: 1rem;
     padding: 2rem;
 }

@@ -1,3 +1,5 @@
+@import './variables.scss';
+
 .form-group {
     margin-bottom: 3rem;
 
@@ -21,7 +23,7 @@
     outline: 0;
 
     &:focus {
-        box-shadow: 0 0 1.5rem rgba(116, 189, 255, .5);
+        box-shadow: 0 0 1.5rem rgba($color-blue, .5);
     }
 
     &.mod-icon {
@@ -29,12 +31,12 @@
     }
 
     &.mod-error {
-        box-shadow: 0 0 1.5rem rgba(#bf517d, .3);
+        box-shadow: 0 0 1.5rem rgba($color-red, .3);
     }
 }
  
 .form-error {
-    color: #bf517d;
+    color: $color-red;
     font-size: 1.4rem;
     margin-bottom: 1rem;
 }
@@ -48,7 +50,7 @@
 }
 
 .form-action {
-    background: linear-gradient(#3ec59f, #39bf99);
+    background: linear-gradient(lighten($color-green, 2.5%), $color-green);
     padding: 1.5rem;
     border-radius: 1rem;
     text-align: center;

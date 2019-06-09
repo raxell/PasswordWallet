@@ -30,6 +30,8 @@ export default {
 </script>
 
 <style lang="scss">
+@import '../assets/variables.scss';
+
 .dbs {
     list-style: none;
     margin: 0;
@@ -72,18 +74,18 @@ export default {
     }
 
     &.mod-edit {
-        color: #73bafd;
+        color: $color-blue;
 
         &:hover {
-            background: lighten(#73bafd, 20%);
+            background: $bg-blue;
         }
     }
 
     &.mod-delete {
-        color: #bf517d;
+        color: $color-red;
 
         &:hover {
-            background: lighten(#bf517d, 37.5%);
+            background: $bg-red;
         }
     }
 }
