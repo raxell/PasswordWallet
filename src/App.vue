@@ -12,7 +12,9 @@
         <component
         v-if="supportWebCrypto()"
         :is="currentPage"
+        :db="activeDb"
         @notice="addNotice"
+        @pagePrev="navigatePrev"
         @pageChange="navigateTo"/>
 
         <div class="notice mod-error" v-else>Your browser does not support Web Crypto API, update it to use the App.</div>
@@ -21,6 +23,7 @@
 
 <script>
 import DbStore from './db-store.js';
+
 import Index from './components/Index.vue';
 import Auth from './components/Auth.vue';
 import Database from './components/Database.vue';
@@ -33,8 +36,10 @@ export default {
     },
     data: () => ({
         currentPage: '',
+        prevPage: '',
         title: '',
         dbStore: DbStore(),
+        activeDb: null,
         notice: null,
     }),
     methods: {
@@ -42,13 +47,20 @@ export default {
             return window.crypto && window.crypto.subtle;
         },
         navigateTo(page, dbName) {
+            this.prevPage = this.currentPage;
+            this.activeDb = dbName;
+
             if (!dbName || this.dbStore.get(dbName)) {
                 this.currentPage = page;
                 this.title = this.titleOf(page);
             } else {
+                this.prevPage = page;
                 this.currentPage = 'Auth';
                 this.title = this.titleOf('Auth');
             }
+        },
+        navigatePrev() {
+            this.navigateTo(this.prevPage);
         },
         titleOf(page) {
             return {
