@@ -2,7 +2,7 @@
     <form id="create-db" @submit.prevent="persistDb()">
         <div class="form-group">
             <label class="form-control-desc" for="name">Database name</label>
-            <div class="form-error" v-if="name.error">{{ name.error }}</div>
+            <div class="form-control-error" v-if="name.error">{{ name.error }}</div>
             <input
                 id="name"
                 class="form-control"
@@ -13,7 +13,7 @@
         </div>
         <div class="form-group">
             <label class="form-control-desc" for="password">Database password</label>
-            <div class="form-error" v-if="password.error">{{ password.error }}</div>
+            <div class="form-control-error" v-if="password.error">{{ password.error }}</div>
             <input
                 id="password"
                 class="form-control"
