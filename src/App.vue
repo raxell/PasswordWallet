@@ -117,7 +117,7 @@ body {
     font-size: 1.6rem;
     margin: 0;
     font-family: 'Montserrat', sans-serif;
-    color: #333;
+    color: #555;
 }
 
 #app {
@@ -128,7 +128,7 @@ body {
 
 .header {
     position: relative;
-    margin-bottom: 2rem;
+    margin-bottom: 3rem;
 }
 
 .header-logo {
