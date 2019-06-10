@@ -66,7 +66,7 @@ export default {
             document.title = this.title;
         },
         navigatePrev() {
-            this.navigateTo(this.prevPage);
+            this.navigateTo(this.prevPage, this.pageState);
         },
         titleOf(page) {
             const editTitle = (entityType, entityName) => ({
