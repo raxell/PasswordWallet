@@ -62,16 +62,24 @@ export default {
                 this.currentPage = 'Auth';
                 this.title = this.titleOf('Auth');
             }
+
+            document.title = this.title;
         },
         navigatePrev() {
             this.navigateTo(this.prevPage);
         },
         titleOf(page) {
+            const editTitle = (entityType, entityName) => ({
+                'create': `Create new ${entityType}`,
+                'delete': `Delete "${entityName}"`,
+                'edit': `Edit "${entityName}"`,
+            });
+
             return {
                 'Index': 'Your Databases',
-                'Auth': 'Unlock Database',
-                'Database': '...',
-                'DatabaseEdit': 'Create new database',
+                'Auth': `Unlock "${this.pageState.db}"`,
+                'Database': this.pageState.db,
+                'DatabaseEdit': editTitle('Database', this.pageState.db)[this.pageState.action],
             }[page];
         },
         addNotice(type, msg) {
