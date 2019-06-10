@@ -1,7 +1,7 @@
 <template>
     <div class="main">
         <div class="form-group mod-action">
-            <button class="form-action" @click="$emit('pageChange', 'DatabaseEdit', { db: null, action: 'create' })">
+            <button class="form-action" @click="$emit('pageChange', 'DatabaseEdit', { action: 'create' })">
                 Create new
             </button>
         </div>
