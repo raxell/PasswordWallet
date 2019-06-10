@@ -1,5 +1,5 @@
 <template>
-    <form id="create-db" @submit.prevent="persistDb()">
+    <form id="create-db" @submit.prevent="executeAction()">
         <template v-if="state.action === 'create'">
             <div class="form-group">
                 <label class="form-control-desc" for="name">Database name</label>
@@ -27,6 +27,10 @@
                 <button class="form-action" type="submit">Save changes</button>
             </div>
         </template>
+
+        <div class="form-group" v-else-if="state.action === 'delete'">
+            <button class="form-action mod-confirm" type="submit">Confirm deletion</button>
+        </div>
     </form>
 </template>
 
@@ -61,7 +65,7 @@ export default {
                 this.password.error = null;
             }
         },
-        persistDb() {
+        createDb() {
             this.validateName();
             this.validatePassword();
 
@@ -76,6 +80,22 @@ export default {
                         this.$emit('notice', 'success', 'Database created successfully');
                         this.$emit('pageChange', 'Index');
                     })
+            }
+        },
+        deleteDb() {
+            this.dbStore.remove(this.state.db, { fromDisk: true })
+
+            this.$emit('notice', 'success', 'Database deleted successfully');
+            this.$emit('pageChange', 'Index');
+        },
+        executeAction() {
+            switch (this.state.action) {
+                case 'delete':
+                    this.deleteDb();
+                    break;
+                case 'create':
+                    this.createDb();
+                    break;
             }
         }
     }

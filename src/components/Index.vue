@@ -14,7 +14,9 @@
                 <Edit2Icon
                     class="db-action mod-edit"
                     @click="$emit('pageChange', 'DatabaseEdit', { db, action: 'edit' })" />
-                <Trash2Icon class="db-action mod-delete" />
+                <Trash2Icon
+                    class="db-action mod-delete"
+                    @click="$emit('pageChange', 'DatabaseEdit', { db, action: 'delete' })" />
             </li>
         </ul>
     </div>

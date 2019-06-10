@@ -58,5 +58,9 @@
     border: 0;
     cursor: pointer;
     font-weight: 600;
+
+    &.mod-confirm {
+        width: 100%;
+    }
 }
 

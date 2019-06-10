@@ -18,6 +18,15 @@ export default function DbStore(sessionExpiration = 60 * 5) {
 
             return db.db;
         },
+        remove(name, { fromDisk }) {
+            const db = dbs.get(name).db;
+
+            if (fromDisk) {
+                db.drop();
+            }
+
+            dbs.delete(name);
+        },
         async auth(name, password) {
             try {
                 const db = await Database(name, password);

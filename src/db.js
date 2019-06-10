@@ -51,6 +51,9 @@ export async function Database(name, password) {
                 localStorage.setItem(name, JSON.stringify(db));
             }
         },
+        drop() {
+            localStorage.removeItem(name);
+        },
     };
 }
 
