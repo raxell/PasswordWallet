@@ -35,6 +35,8 @@
 </template>
 
 <script>
+import * as Db from '../db.js';
+
 export default {
     created() {
         this.name.value = this.state.db || '';
@@ -57,6 +59,8 @@ export default {
         validateName() {
             if (this.name.value === '') {
                 this.name.error = 'Name required';
+            } else if (Db.exists(this.name.value)) {
+                this.name.error = `Database "${this.name.value}" already exists`;
             } else {
                 this.name.error = null;
             }
