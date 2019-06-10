@@ -30,9 +30,12 @@
                     id="password"
                     class="form-control"
                     :class="{ 'mod-error': password.error }"
-                    type="password"
+                    :type="password.hidden ? 'password' : 'text'"
                     placeholder="Password..."
                     v-model="password.value">
+                <EyeIcon v-if="password.hidden" class="form-control-icon" @click="password.hidden = !password.hidden"/>
+                <EyeOffIcon v-else class="form-control-icon" @click="password.hidden = !password.hidden"/>
+                <RefreshCwIcon class="form-control-icon" @click="generatePassword()"/>
             </div>
             <div class="form-group mod-action">
                 <button class="form-action" type="submit">Save changes</button>
@@ -46,11 +49,19 @@
 </template>
 
 <script>
+import * as Crypto from '../crypto-utils.js';
+import { RefreshCwIcon, EyeIcon, EyeOffIcon } from 'vue-feather-icons';
+
 export default {
     created() {
         const entry = this.db.get(this.state.entry);
         this.user.value = entry ? entry.user : '';
         this.name.value = this.state.entry || '';
+    },
+    components: {
+        RefreshCwIcon,
+        EyeIcon,
+        EyeOffIcon,
     },
     props: [
         'state',
@@ -68,6 +79,7 @@ export default {
         password: {
             value: '',
             error: null,
+            hidden: true,
         },
     }),
     computed: {
@@ -76,6 +88,9 @@ export default {
         },
     },
     methods: {
+        generatePassword() {
+            this.password.value = Crypto.randomBytes(24);
+        },
         validateName() {
             if (this.name.value === '') {
                 this.name.error = 'Name required';
