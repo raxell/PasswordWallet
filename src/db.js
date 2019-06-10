@@ -36,19 +36,26 @@ export async function Database(name, password) {
 
     return {
         entries() {
-            return db.entries;
+            return Object.values(db.entries);
         },
         get(id) {
             return db.entries[id];
         },
         add(id, password) {
-            db.entries[id] = { password };
+            db.entries[id] = { id, password };
             modified = true;
+        },
+        async rename(newName) {
+            localStorage.removeItem(name);
+            name = newName;
+            modified = true;
+            await this.save();
         },
         async save() {
             if (modified) {
                 db.entries = await Crypto.encrypt(JSON.stringify(db.entries), aesKey, meta.iv);
                 localStorage.setItem(name, JSON.stringify(db));
+                modified = false;
             }
         },
         drop() {

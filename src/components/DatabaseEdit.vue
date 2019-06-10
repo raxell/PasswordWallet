@@ -1,6 +1,6 @@
 <template>
     <form id="create-db" @submit.prevent="executeAction()">
-        <template v-if="state.action === 'create'">
+        <template v-if="state.action === 'create' || state.action === 'edit'">
             <div class="form-group">
                 <label class="form-control-desc" for="name">Database name</label>
                 <div class="form-control-error" v-if="name.error">{{ name.error }}</div>
@@ -13,7 +13,7 @@
                     v-model="name.value">
             </div>
             <div class="form-group">
-                <label class="form-control-desc" for="password">Database password</label>
+                <label class="form-control-desc" for="password">{{ state ? 'New' : 'Database' }} password</label>
                 <div class="form-control-error" v-if="password.error">{{ password.error }}</div>
                 <input
                     id="password"
@@ -36,6 +36,9 @@
 
 <script>
 export default {
+    created() {
+        this.name.value = this.state.db;
+    },
     props: [
         'state',
         'dbStore',
@@ -67,7 +70,7 @@ export default {
         },
         createDb() {
             this.validateName();
-            this.validatePassword();
+            this.validatePassword(this.password);
 
             if (!this.name.error && !this.password.error) {
                 this.dbStore.auth(this.name.value, this.password.value)
@@ -88,6 +91,25 @@ export default {
             this.$emit('notice', 'success', 'Database deleted successfully');
             this.$emit('pageChange', 'Index');
         },
+        updateDb() {
+            this.validateName();
+
+            if (this.password.value !== '') {
+                this.validatePassword();
+            }
+
+            if (!this.name.error && !this.password.error) {
+                this.dbStore.update({
+                    oldName: this.state.db,
+                    newName: this.name.value,
+                    newPassword: this.password.value,
+                })
+                    .then(() => {
+                        this.$emit('notice', 'success', 'Database updated successfully');
+                        this.$emit('pageChange', 'Index');
+                    })
+            }
+        },
         executeAction() {
             switch (this.state.action) {
                 case 'delete':
@@ -95,6 +117,9 @@ export default {
                     break;
                 case 'create':
                     this.createDb();
+                    break;
+                case 'edit':
+                    this.updateDb();
                     break;
             }
         }

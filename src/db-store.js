@@ -27,6 +27,24 @@ export default function DbStore(sessionExpiration = 60 * 5) {
 
             dbs.delete(name);
         },
+        async update({ oldName, newName, newPassword }) {
+            const oldDb = dbs.get(oldName).db;
+
+            if (!newPassword || newPassword === '') {
+                await oldDb.rename(newName);
+                return;
+            }
+
+            oldDb.drop();
+            const newDb = await Database(newName, newPassword);
+
+            for (const { id, password } of oldDb.entries()) {
+                newDb.add(id, password);
+            }
+
+            await newDb.save();
+            dbs.delete(oldName);
+        },
         async auth(name, password) {
             try {
                 const db = await Database(name, password);
