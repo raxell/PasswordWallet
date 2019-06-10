@@ -74,7 +74,7 @@ export default {
         },
         createDb() {
             this.validateName();
-            this.validatePassword(this.password);
+            this.validatePassword();
 
             if (!this.name.error && !this.password.error) {
                 this.dbStore.auth(this.name.value, this.password.value)
