@@ -21,6 +21,8 @@ export async function Database(name, password) {
     const data = localStorage.getItem(name);
     const db = data ? JSON.parse(data) : await initDb(password);
     const meta = db.meta;
+
+    let modified = !data ? true : false;
     
     const verificationKey = await Crypto.deriveVerificationKey(password, meta.verificationSalt);
 
@@ -41,10 +43,13 @@ export async function Database(name, password) {
         },
         add(id, password) {
             db.entries[id] = { password };
+            modified = true;
         },
         async save() {
-            db.entries = await Crypto.encrypt(JSON.stringify(db.entries), aesKey, meta.iv);
-            localStorage.setItem(name, JSON.stringify(db));
+            if (modified) {
+                db.entries = await Crypto.encrypt(JSON.stringify(db.entries), aesKey, meta.iv);
+                localStorage.setItem(name, JSON.stringify(db));
+            }
         },
     };
 }

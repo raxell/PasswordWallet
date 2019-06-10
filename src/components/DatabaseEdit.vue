@@ -31,8 +31,6 @@
 </template>
 
 <script>
-import { Database } from '../db.js';
-
 export default {
     props: [
         'state',
@@ -68,17 +66,16 @@ export default {
             this.validatePassword();
 
             if (!this.name.error && !this.password.error) {
-                Database(this.name.value, this.password.value)
+                this.dbStore.auth(this.name.value, this.password.value)
                     .then((db) => {
-                        return db.save();
-                    })
-                    .then(() => {
+                        if (!db) {
+                            // @TODO: handle error
+                            return;
+                        }
+
                         this.$emit('notice', 'success', 'Database created successfully');
                         this.$emit('pageChange', 'Index');
                     })
-                    .catch(() => {
-
-                    });
             }
         }
     }

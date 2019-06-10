@@ -21,6 +21,8 @@ export default function DbStore(sessionExpiration = 60 * 5) {
         async auth(name, password) {
             try {
                 const db = await Database(name, password);
+                await db.save();
+
                 dbs.set(name, {
                     db,
                     expiration: newExpiration(),
