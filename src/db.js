@@ -43,9 +43,12 @@ export async function Database(name, password) {
         get(id) {
             return db.entries[id];
         },
-        add(id, user, password) {
-            db.entries[id] = { id, user, password };
+        add(name, user, password) {
+            db.entries[name] = { name, user, password };
             modified = true;
+        },
+        remove(name) {
+            delete db.entries[name];
         },
         async rename(newName) {
             localStorage.removeItem(name);

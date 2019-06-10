@@ -29,6 +29,7 @@ import Index from './components/Index.vue';
 import Auth from './components/Auth.vue';
 import Database from './components/Database.vue';
 import DatabaseEdit from './components/DatabaseEdit.vue';
+import EntryEdit from './components/EntryEdit.vue';
 
 export default {
     name: 'app',
@@ -80,6 +81,7 @@ export default {
                 'Auth': `Unlock "${this.pageState.db}"`,
                 'Database': this.pageState.db,
                 'DatabaseEdit': editTitle('Database', this.pageState.db)[this.pageState.action],
+                'EntryEdit': editTitle('Entry', this.pageState.entry)[this.pageState.action],
             }[page];
         },
         addNotice(type, msg) {
@@ -95,6 +97,7 @@ export default {
         Auth,
         Database,
         DatabaseEdit,
+        EntryEdit,
     },
 }
 </script>

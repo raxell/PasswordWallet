@@ -38,8 +38,8 @@ export default function DbStore(sessionExpiration = 60 * 5) {
             oldDb.drop();
             const newDb = await Database(newName, newPassword);
 
-            for (const { id, user, password } of oldDb.entries()) {
-                newDb.add(id, user, password);
+            for (const { name, user, password } of oldDb.entries()) {
+                newDb.add(name, user, password);
             }
 
             await newDb.save();

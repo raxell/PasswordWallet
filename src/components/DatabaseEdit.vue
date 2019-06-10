@@ -80,7 +80,7 @@ export default {
                 this.dbStore.auth(this.name.value, this.password.value)
                     .then((db) => {
                         if (!db) {
-                            // @TODO: handle error
+                            this.$emit('notice', 'error', 'An error occurred while creating the database');
                             return;
                         }
 

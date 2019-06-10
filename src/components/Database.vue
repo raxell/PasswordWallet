@@ -7,15 +7,15 @@
         </div>
 
         <ul class="boxes" v-if="entries.length > 0">
-            <li class="box" v-for="entry in entries" :key="entry.id">
+            <li class="box" v-for="entry in entries" :key="entry.name">
                 <div class="box-item">
-                    <h2 class="item-name mod-title">{{ entry.id }}</h2>
+                    <h2 class="item-name mod-title">{{ entry.name }}</h2>
                     <Edit2Icon
                         class="item-action mod-edit"
-                        @click="$emit('pageChange', 'EntryEdit', { db: state.db, entry: entry.id, action: 'edit' })" />
+                        @click="$emit('pageChange', 'EntryEdit', { db: state.db, entry: entry.name, action: 'edit' })" />
                     <Trash2Icon
                         class="item-action mod-delete"
-                        @click="$emit('pageChange', 'EntryEdit', { db: state.db, entry: entry.id, action: 'delete' })" />
+                        @click="$emit('pageChange', 'EntryEdit', { db: state.db, entry: entry.name, action: 'delete' })" />
                 </div>
                 <div class="box-item">
                     <div class="item-name">{{ entry.user }}</div>
