@@ -37,7 +37,7 @@
 <script>
 export default {
     created() {
-        this.name.value = this.state.db;
+        this.name.value = this.state.db || '';
     },
     props: [
         'state',
