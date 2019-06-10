@@ -102,6 +102,10 @@
             text-decoration: underline;
         }
     }
+
+    &.mod-password {
+        letter-spacing: .25rem;
+    }
 }
 
 .item-action {

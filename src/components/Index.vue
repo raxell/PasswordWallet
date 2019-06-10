@@ -35,7 +35,6 @@ export default {
     components: {
         Edit2Icon,
         Trash2Icon,
-        CopyIcon,
     }
 }
 </script>

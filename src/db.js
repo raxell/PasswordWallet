@@ -43,8 +43,8 @@ export async function Database(name, password) {
         get(id) {
             return db.entries[id];
         },
-        add(id, password) {
-            db.entries[id] = { id, password };
+        add(id, user, password) {
+            db.entries[id] = { id, user, password };
             modified = true;
         },
         async rename(newName) {
