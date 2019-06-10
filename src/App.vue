@@ -10,12 +10,12 @@
         </transition>
 
         <component
-        v-if="supportWebCrypto()"
-        :is="currentPage"
-        :db="activeDb"
-        @notice="addNotice"
-        @pagePrev="navigatePrev"
-        @pageChange="navigateTo"/>
+            v-if="supportWebCrypto()"
+            :is="currentPage"
+            :state="activeDb"
+            @notice="addNotice"
+            @pagePrev="navigatePrev"
+            @pageChange="navigateTo"/>
 
         <div class="notice mod-error" v-else>Your browser does not support Web Crypto API, update it to use the App.</div>
     </div>
