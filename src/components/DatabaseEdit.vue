@@ -1,30 +1,32 @@
 <template>
     <form id="create-db" @submit.prevent="persistDb()">
-        <div class="form-group">
-            <label class="form-control-desc" for="name">Database name</label>
-            <div class="form-control-error" v-if="name.error">{{ name.error }}</div>
-            <input
-                id="name"
-                class="form-control"
-                :class="{ 'mod-error': name.error }"
-                type="text"
-                placeholder="Name..."
-                v-model="name.value">
-        </div>
-        <div class="form-group">
-            <label class="form-control-desc" for="password">Database password</label>
-            <div class="form-control-error" v-if="password.error">{{ password.error }}</div>
-            <input
-                id="password"
-                class="form-control"
-                :class="{ 'mod-error': password.error }"
-                type="password"
-                placeholder="Password..."
-                v-model="password.value">
-        </div>
-        <div class="form-group mod-action">
-            <button class="form-action" type="submit">Save changes</button>
-        </div>
+        <template v-if="state.action === 'create'">
+            <div class="form-group">
+                <label class="form-control-desc" for="name">Database name</label>
+                <div class="form-control-error" v-if="name.error">{{ name.error }}</div>
+                <input
+                    id="name"
+                    class="form-control"
+                    :class="{ 'mod-error': name.error }"
+                    type="text"
+                    placeholder="Name..."
+                    v-model="name.value">
+            </div>
+            <div class="form-group">
+                <label class="form-control-desc" for="password">Database password</label>
+                <div class="form-control-error" v-if="password.error">{{ password.error }}</div>
+                <input
+                    id="password"
+                    class="form-control"
+                    :class="{ 'mod-error': password.error }"
+                    type="password"
+                    placeholder="Password..."
+                    v-model="password.value">
+            </div>
+            <div class="form-group mod-action">
+                <button class="form-action" type="submit">Save changes</button>
+            </div>
+        </template>
     </form>
 </template>
 
@@ -32,6 +34,10 @@
 import { Database } from '../db.js';
 
 export default {
+    props: [
+        'state',
+        'dbStore',
+    ],
     data: () => ({
         name: {
             value: '',

@@ -21,6 +21,7 @@ import { ArrowRightIcon } from 'vue-feather-icons';
 export default {
     props: [
         'state',
+        'dbStore',
     ],
     data: () => ({
         password: '',
@@ -33,7 +34,7 @@ export default {
                 return;
             }
 
-            this.$parent.dbStore.auth(this.state, this.password)
+            this.dbStore.auth(this.state.db, this.password)
                 .then((db) => {
                     if (!db) {
                         this.error = 'Invalid password';

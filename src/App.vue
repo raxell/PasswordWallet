@@ -12,7 +12,8 @@
         <component
             v-if="supportWebCrypto()"
             :is="currentPage"
-            :state="activeDb"
+            :dbStore="dbStore"
+            :state="pageState"
             @notice="addNotice"
             @pagePrev="navigatePrev"
             @pageChange="navigateTo"/>
@@ -39,18 +40,21 @@ export default {
         prevPage: '',
         title: '',
         dbStore: DbStore(),
-        activeDb: null,
+        pageState: {
+            db: null,
+            action: null,
+        },
         notice: null,
     }),
     methods: {
         supportWebCrypto() {
             return window.crypto && window.crypto.subtle;
         },
-        navigateTo(page, dbName) {
+        navigateTo(page, pageState = {}) {
             this.prevPage = this.currentPage;
-            this.activeDb = dbName;
+            this.pageState = pageState;
 
-            if (!dbName || this.dbStore.get(dbName)) {
+            if (!pageState.db || this.dbStore.get(pageState.db)) {
                 this.currentPage = page;
                 this.title = this.titleOf(page);
             } else {

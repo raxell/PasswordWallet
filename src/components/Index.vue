@@ -1,13 +1,19 @@
 <template>
     <div class="main">
         <div class="form-group mod-action">
-            <button class="form-action" @click="$emit('pageChange', 'DatabaseEdit')">Create new</button>
+            <button class="form-action" @click="$emit('pageChange', 'DatabaseEdit', { db: null, action: 'create' })">
+                Create new
+            </button>
         </div>
 
         <ul class="dbs" v-if="dbs.length > 0">
             <li class="db" v-for="db in dbs" :key="db">
-                <h2 class="db-name" @click="$emit('pageChange', 'Database', db)">{{ db }}</h2>
-                <Edit2Icon class="db-action mod-edit" @click="$emit('pageChange', 'DatabaseEdit', db)" />
+                <h2 class="db-name" @click="$emit('pageChange', 'Database', { db })">
+                    {{ db }}
+                </h2>
+                <Edit2Icon
+                    class="db-action mod-edit"
+                    @click="$emit('pageChange', 'DatabaseEdit', { db, action: 'edit' })" />
                 <Trash2Icon class="db-action mod-delete" />
             </li>
         </ul>
