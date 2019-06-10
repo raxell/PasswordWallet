@@ -3,14 +3,15 @@
         <div class="form-group">
             <label class="form-control-desc" for="password">Password to unlock</label>
             <div class="form-control-error" v-if="error">{{ error }}</div>
+
+            <ArrowRightIcon class="form-control-icon" @click="authenticate()"/>
             <input
                 id="password"
-                class="form-control"
+                class="form-control mod-password"
                 :class="{ 'mod-error': error }"
                 type="password"
                 v-model="password"
                 placeholder="Password...">
-            <ArrowRightIcon class="form-control-icon" @click="authenticate()"/>
         </div>
     </form>
 </template>

@@ -24,7 +24,7 @@
                         @click="copy(entry.user)" />
                 </div>
                 <div class="box-item">
-                    <div class="item-name mod-password">**************</div>
+                    <div class="item-name mod-password">••••••••••••••••</div>
                     <CopyIcon
                         class="item-action"
                         @click="copy(entry.password)" />

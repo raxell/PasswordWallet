@@ -26,16 +26,17 @@
             <div class="form-group">
                 <label class="form-control-desc" for="password">{{ state.entry ? 'New' : '' }} Password</label>
                 <div class="form-control-error" v-if="password.error">{{ password.error }}</div>
+
+                <EyeIcon v-if="password.hidden" class="form-control-icon" @click="password.hidden = !password.hidden"/>
+                <EyeOffIcon v-else class="form-control-icon" @click="password.hidden = !password.hidden"/>
+                <RefreshCwIcon class="form-control-icon" @click="generatePassword()"/>
                 <input
                     id="password"
-                    class="form-control"
+                    class="form-control mod-password"
                     :class="{ 'mod-error': password.error }"
                     :type="password.hidden ? 'password' : 'text'"
                     placeholder="Password..."
                     v-model="password.value">
-                <EyeIcon v-if="password.hidden" class="form-control-icon" @click="password.hidden = !password.hidden"/>
-                <EyeOffIcon v-else class="form-control-icon" @click="password.hidden = !password.hidden"/>
-                <RefreshCwIcon class="form-control-icon" @click="generatePassword()"/>
             </div>
             <div class="form-group mod-action">
                 <button class="form-action" type="submit">Save changes</button>

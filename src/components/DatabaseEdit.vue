@@ -17,7 +17,7 @@
                 <div class="form-control-error" v-if="password.error">{{ password.error }}</div>
                 <input
                     id="password"
-                    class="form-control"
+                    class="form-control mod-password"
                     :class="{ 'mod-error': password.error }"
                     type="password"
                     placeholder="Password..."
