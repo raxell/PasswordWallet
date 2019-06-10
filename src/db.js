@@ -58,6 +58,7 @@ export async function Database(name, password) {
                 db.entries = await Crypto.encrypt(JSON.stringify(db.entries), aesKey, meta.iv);
                 localStorage.setItem(name, JSON.stringify(db));
                 modified = false;
+                db.entries = JSON.parse(await Crypto.decrypt(db.entries, aesKey, meta.iv));
             }
         },
         drop() {
