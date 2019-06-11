@@ -26,7 +26,7 @@ async function deriveKey(password, salt, isEncryptionKey) {
             salt: base64ToBuffer(salt),
             name: 'PBKDF2',
             hash: 'SHA-256',
-            iterations: isEncryptionKey ? 2 ** 14 : 2 ** 18,
+            iterations: 2 ** 18,
         },
         passwordKey,
         { name: 'AES-GCM', length: 256 },
