@@ -1,29 +1,23 @@
-# password_wallet
+# PasswordWallet
 
-## Project setup
+## Usage
+
+To use the app:
+
+* Install the required dependencies
 ```
 npm install
 ```
 
-### Compiles and hot-reloads for development
-```
-npm run serve
-```
-
-### Compiles and minifies for production
+* Build CSS, JS files
 ```
 npm run build
 ```
 
-### Run your tests
+* Start the server
 ```
-npm run test
-```
-
-### Lints and fixes files
-```
-npm run lint
+npm start
 ```
 
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+Go to `http://localhost:3000/` to view the app.
+
