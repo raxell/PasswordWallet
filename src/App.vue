@@ -44,6 +44,7 @@ export default {
         dbStore: DbStore(),
         pageState: {
             db: null,
+            entry: null,
             action: null,
         },
         notice: null,
