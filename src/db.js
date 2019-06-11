@@ -3,6 +3,7 @@ import * as Crypto from './crypto-utils.js';
 export const list = () => Object.keys(localStorage);
 
 export const exists = (name) => Boolean(localStorage.getItem(name));
+export const exportDb = (name) => localStorage.getItem(name);
 
 async function initDb(password) {
     const db = {};

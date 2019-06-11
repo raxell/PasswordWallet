@@ -12,6 +12,9 @@
                     <h2 class="item-name mod-title" @click="$emit('pageChange', 'Database', { db })">
                         {{ db }}
                     </h2>
+                    <DownloadIcon
+                        class="item-action"
+                        @click="$emit('pageChange', 'DatabaseSync', { db, action: 'export' })" />
                     <Edit2Icon
                         class="item-action mod-edit"
                         @click="$emit('pageChange', 'DatabaseEdit', { db, action: 'edit' })" />
@@ -26,7 +29,7 @@
 
 <script>
 import * as Db from '../db.js';
-import { Edit2Icon, Trash2Icon } from 'vue-feather-icons';
+import { Edit2Icon, Trash2Icon, DownloadIcon } from 'vue-feather-icons';
 
 export default {
     data: () => ({
@@ -35,7 +38,8 @@ export default {
     components: {
         Edit2Icon,
         Trash2Icon,
-    }
+        DownloadIcon,
+    },
 }
 </script>
 

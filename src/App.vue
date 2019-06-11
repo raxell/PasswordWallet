@@ -29,6 +29,7 @@ import Index from './components/Index.vue';
 import Auth from './components/Auth.vue';
 import Database from './components/Database.vue';
 import DatabaseEdit from './components/DatabaseEdit.vue';
+import DatabaseSync from './components/DatabaseSync.vue';
 import EntryEdit from './components/EntryEdit.vue';
 
 export default {
@@ -81,6 +82,7 @@ export default {
                 'Auth': `Unlock "${this.pageState.db}"`,
                 'Database': this.pageState.db,
                 'DatabaseEdit': editTitle('Database', this.pageState.db)[this.pageState.action],
+                'DatabaseSync': this.pageState.action === 'export' ? `Export "${this.pageState.db}"` : 'Import database',
                 'EntryEdit': editTitle('Entry', this.pageState.entry)[this.pageState.action],
             }[page];
         },
@@ -97,6 +99,7 @@ export default {
         Auth,
         Database,
         DatabaseEdit,
+        DatabaseSync,
         EntryEdit,
     },
 }
