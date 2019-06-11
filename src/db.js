@@ -4,6 +4,7 @@ export const list = () => Object.keys(localStorage);
 
 export const exists = (name) => Boolean(localStorage.getItem(name));
 export const exportDb = (name) => localStorage.getItem(name);
+export const importDb = (name, data) => localStorage.setItem(name, data);
 
 async function initDb(password) {
     const db = {};

@@ -4,6 +4,9 @@
             <button class="form-action" @click="$emit('pageChange', 'DatabaseEdit', { action: 'create' })">
                 Create new
             </button>
+            <button class="form-action" @click="$emit('pageChange', 'DatabaseSync', { action: 'import' })">
+                Import
+            </button>
         </div>
 
         <ul class="boxes" v-if="dbs.length > 0">

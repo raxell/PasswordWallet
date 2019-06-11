@@ -51,11 +51,11 @@ const init = async () => {
             const db = storage[req.query.id];
 
             if (!db) {
-                return h.response({ success: false, error: `Id "${req.query.id}" does not exist`}).code(400);
+                return h.response({ success: false, field: 'id', error: `Id "${req.query.id}" does not exist`}).code(400);
             }
 
             if (hash(req.query.code) !== db.codeHash) {
-                return h.response({ success: false, error: 'Invalid code' }).code(400);
+                return h.response({ success: false, field: 'code', error: 'Invalid code' }).code(400);
             }
 
             return { success: true, data: db.data };

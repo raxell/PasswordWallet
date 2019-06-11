@@ -1,8 +1,22 @@
 <template>
-    <form class="main" @submit.prevent="upload">
+    <form class="main" @submit.prevent="executeAction">
         <div class="form-group" v-if="state.action === 'export'">
             <a class="form-action mod-confirm" @click="downloadToDisk">Export to disk</a>
         </div>
+
+        <template v-if="state.action === 'import'">
+            <div class="form-group" >
+                <label class="form-control-desc" for="file">Database File</label>
+                <input
+                    id="file"
+                    class="form-control"
+                    type="file"
+                    placeholder="File..."
+                    @change="loadFile">
+            </div>
+            <div class="alternative-import">Or import from server</div>
+        </template>
+
 
         <div class="form-group">
             <label class="form-control-desc" for="id">Database Id</label>
@@ -16,17 +30,23 @@
                 v-model="id.value">
         </div>
         <div class="form-group">
-            <label class="form-control-desc" for="code">Temp code (remember it for subsequent import)</label>
+            <label class="form-control-desc" for="code">
+                Temp code {{ state.action === 'export' ? '(remember it for subsequent import)' : ''}}
+            </label>
+            <div class="form-control-error" v-if="code.error">{{ code.error }}</div>
             <input
                 id="code"
                 class="form-control mod-password"
-                type="text"
+                :class="{ 'mod-error': code.error }"
+                :type="state.action === 'export' ? 'text' : 'password'"
                 placeholder="Temp code..."
                 v-model="code.value"
-                readonly>
+                :readonly="state.action === 'export'">
         </div>
         <div class="form-group mod-action">
-            <button class="form-action" type="submit">Upload</button>
+            <button class="form-action" type="submit">
+                {{ state.action === 'export' ? 'Upload': 'Import' }}
+            </button>
         </div>
     </form>
 </template>
@@ -46,6 +66,10 @@ export default {
         'dbStore',
     ],
     data: () => ({
+        file: {
+            name: '',
+            data: null,
+        },
         id: {
             value: '',
             error: null,
@@ -56,6 +80,18 @@ export default {
         },
     }),
     methods: {
+        loadFile(event) {
+            const reader = new FileReader();
+            reader.addEventListener('load', (e) => {
+                try {
+                    this.file = JSON.parse(e.target.result);
+                } catch (err) {
+                    this.$emit('notice', 'error', 'Cannot read the file, invalid format.');
+                }
+
+            });
+            reader.readAsText(event.target.files[0]);
+        },
         serializedDb() {
             return JSON.stringify({
                 name: this.state.db,
@@ -89,12 +125,71 @@ export default {
                         if (!res.success) {
                             this.id.error = `Id "${this.id.value}" already exists, choose another one.`;
                         } else {
-                            this.$emit('notice', 'success', 'Database uploaded successfully, you can now import it on another device.');
+                            this.$emit('notice', 'success', 'Database uploaded successfully, you can now import it from another device.');
                         }
                     })
                     .catch(() => {
                         this.$emit('notice', 'error', 'Network Error, you have to be online to use server syncronization.');
                     });
+            }
+        },
+        importDb() {
+            if (this.file.data) {
+                if (Db.exists(this.file.name)) {
+                    this.$emit('notice', 'error', `Database "${this.file.name}" already exists.`);
+                    return;
+                }
+
+                Db.importDb(this.file.name, this.file.data);
+                this.$emit('notice', 'success', 'Database imported successfully');
+                this.$emit('pageChange', 'Index');
+
+                return;
+            }
+
+            this.id.error = this.id.value === '' ? 'Id required' : null;
+            this.code.error = this.code.value === '' ? 'Code required': null;
+
+            if (!this.id.error && !this.code.error) {
+                const id = encodeURIComponent(this.id.value);
+                const code = encodeURIComponent(this.code.value);
+
+                fetch(`http://localhost:3000/db?id=${id}&code=${code}`, {
+                    method: 'GET',
+                    headers: {
+                        'Accept': 'application/json',
+                    },
+                })
+                    .then((res) => res.json())
+                    .then((res) => {
+                        if (!res.success) {
+                            this[res.field].error = res.error;
+                            return;
+                        }
+
+                        const { name, data } = JSON.parse(res.data);
+                        if (Db.exists(name)) {
+                            this.$emit('notice', 'error', `Database "${name}" already exists.`);
+                            return;
+                        }
+
+                        Db.importDb(name, data);
+                        this.$emit('notice', 'success', 'Database imported successfully');
+                        this.$emit('pageChange', 'Index');
+                    })
+                    .catch(() => {
+                        this.$emit('notice', 'error', 'Network Error, you have to be online to use server syncronization.');
+                    });
+            }
+        },
+        executeAction() {
+            switch (this.state.action) {
+                case 'export':
+                    this.upload();
+                    break;
+                case 'import':
+                    this.importDb();
+                    break;
             }
         }
     }
@@ -102,4 +197,8 @@ export default {
 </script>
 
 <style>
+.alternative-import {
+    text-align: center;
+    margin: 2rem 0;
+}
 </style>

@@ -81,6 +81,11 @@
     cursor: pointer;
     font-weight: 600;
     font-size: 1.4rem;
+    margin-right: 1.5rem;
+
+    &:last-of-type {
+        margin-right: 0;
+    }
 
     &.mod-confirm {
         display: block;
