@@ -55,7 +55,6 @@ export default {
             return window.crypto && window.crypto.subtle;
         },
         needReauthentication() {
-            this.addNotice('error', 'Session expired, reauthentication needed');
             this.navigateTo(this.currentPage, this.pageState);
         },
         navigateTo(page, pageState = {}) {
@@ -66,6 +65,7 @@ export default {
                 this.currentPage = page;
                 this.title = this.titleOf(page);
             } else {
+                this.addNotice('error', 'Session expired, reauthentication needed');
                 this.prevPage = page;
                 this.currentPage = 'Auth';
                 this.title = this.titleOf('Auth');
