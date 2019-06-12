@@ -50,6 +50,11 @@ export default {
     }),
     methods: {
         copy(value) {
+            if (!this.dbStore.get(this.state.db)) {
+                this.$emit('sessionExpired');
+                return;
+            }
+
             const input = document.createElement('input');
             input.value = value;
             document.body.appendChild(input);

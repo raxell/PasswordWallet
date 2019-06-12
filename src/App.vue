@@ -16,7 +16,8 @@
             :state="pageState"
             @notice="addNotice"
             @pagePrev="navigatePrev"
-            @pageChange="navigateTo"/>
+            @pageChange="navigateTo"
+            @sessionExpired="needReauthentication"/>
 
         <div class="notice mod-error" v-else>Your browser does not support Web Crypto API, update it to use the App.</div>
     </div>
@@ -52,6 +53,10 @@ export default {
     methods: {
         supportWebCrypto() {
             return window.crypto && window.crypto.subtle;
+        },
+        needReauthentication() {
+            this.addNotice('error', 'Session expired, reauthentication needed');
+            this.navigateTo(this.currentPage, this.pageState);
         },
         navigateTo(page, pageState = {}) {
             this.prevPage = this.currentPage;

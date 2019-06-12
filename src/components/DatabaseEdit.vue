@@ -90,12 +90,22 @@ export default {
             }
         },
         deleteDb() {
+            if (!this.dbStore.get(this.state.db)) {
+                this.$emit('sessionExpired');
+                return;
+            }
+
             this.dbStore.remove(this.state.db, { fromDisk: true })
 
             this.$emit('notice', 'success', 'Database deleted successfully');
             this.$emit('pageChange', 'Index');
         },
         updateDb() {
+            if (!this.dbStore.get(this.state.db)) {
+                this.$emit('sessionExpired');
+                return;
+            }
+
             this.validateName();
 
             if (this.password.value !== '') {

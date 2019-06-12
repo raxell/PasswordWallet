@@ -99,10 +99,20 @@ export default {
             });
         },
         downloadToDisk(event) {
+            if (!this.dbStore.get(this.state.db)) {
+                this.$emit('sessionExpired');
+                return;
+            }
+
             event.target.href = URL.createObjectURL(new Blob([this.serializedDb()], { type: 'text/plain' }));
             event.target.download = `${this.state.db}.txt`;
         },
         upload() {
+            if (!this.dbStore.get(this.state.db)) {
+                this.$emit('sessionExpired');
+                return;
+            }
+
             this.id.error = this.id.value === '' ? 'Id required' : null;
 
             if (!this.id.error) {

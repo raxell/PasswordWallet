@@ -167,6 +167,11 @@ export default {
             }
         },
         executeAction() {
+            if (!this.dbStore.get(this.state.db)) {
+                this.$emit('sessionExpired');
+                return;
+            }
+
             switch (this.state.action) {
                 case 'delete':
                     this.deleteEntry();
