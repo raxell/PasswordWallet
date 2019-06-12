@@ -18,7 +18,7 @@ export default function DbStore(sessionExpiration = 60 * 5) {
 
             return db.db;
         },
-        remove(name, { fromDisk }) {
+        remove(name, { fromDisk } = {}) {
             const db = dbs.get(name).db;
 
             if (fromDisk) {
@@ -32,10 +32,11 @@ export default function DbStore(sessionExpiration = 60 * 5) {
 
             if (!newPassword || newPassword === '') {
                 await oldDb.rename(newName);
+                this.remove(oldName);
+
                 return;
             }
 
-            oldDb.drop();
             const newDb = await Database(newName, newPassword);
 
             for (const { name, user, password } of oldDb.entries()) {
@@ -43,7 +44,7 @@ export default function DbStore(sessionExpiration = 60 * 5) {
             }
 
             await newDb.save();
-            dbs.delete(oldName);
+            this.remove(oldName, { fromDisk: true });
         },
         async auth(name, password) {
             try {
