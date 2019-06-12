@@ -37,6 +37,7 @@ export default function DbStore(sessionExpiration = 60 * 5) {
                 return;
             }
 
+            oldDb.drop();
             const newDb = await Database(newName, newPassword);
 
             for (const { name, user, password } of oldDb.entries()) {
@@ -44,7 +45,7 @@ export default function DbStore(sessionExpiration = 60 * 5) {
             }
 
             await newDb.save();
-            this.remove(oldName, { fromDisk: true });
+            this.remove(oldName);
         },
         async auth(name, password) {
             try {

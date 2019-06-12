@@ -59,8 +59,8 @@ export default {
         validateName() {
             if (this.name.value === '') {
                 this.name.error = 'Name required';
-            } else if (Db.exists(this.name.value)) {
-                this.name.error = `Database "${this.name.value}" already exists`;
+            } else if (this.name.value !== this.state.db && Db.exists(this.name.value)) {
+                this.name.error = `Database "${this.name.value}" already exists, cannot override it`;
             } else {
                 this.name.error = null;
             }
@@ -111,7 +111,7 @@ export default {
                     .then(() => {
                         this.$emit('notice', 'success', 'Database updated successfully');
                         this.$emit('pageChange', 'Index');
-                    })
+                    });
             }
         },
         executeAction() {
