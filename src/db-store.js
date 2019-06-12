@@ -1,6 +1,6 @@
 import { Database } from './db.js';
 
-export default function DbStore(sessionExpiration = 60 * 5) {
+export default function DbStore(sessionExpiration = 5 * 60) {
     const dbs = new Map();
 
     const newExpiration = () => Date.now() + sessionExpiration * 1000;
@@ -11,6 +11,7 @@ export default function DbStore(sessionExpiration = 60 * 5) {
 
             // Session expired
             if (!db || db.expiration <= Date.now()) {
+                dbs.delete(name);
                 return null;
             }
 
