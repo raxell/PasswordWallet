@@ -10,7 +10,7 @@ const init = async () => {
     const hash = (value) => Crypto.createHash('sha512').update(value).digest('hex');
 
     const server = Hapi.server({
-        port: 3000,
+        port: process.env.PORT || 3000,
         host: 'localhost'
     });
 
