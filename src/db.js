@@ -60,6 +60,7 @@ export async function Database(name, password) {
         },
         async save() {
             if (modified) {
+                meta.iv = Crypto.generateIv();
                 db.entries = await Crypto.encrypt(JSON.stringify(db.entries), aesKey, meta.iv);
                 localStorage.setItem(name, JSON.stringify(db));
                 modified = false;
