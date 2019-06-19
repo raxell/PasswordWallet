@@ -1,5 +1,7 @@
 # PasswordWallet
 
+Password management app, demo: https://password-wallet-2.herokuapp.com/
+
 ## Usage
 
 To use the app:
