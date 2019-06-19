@@ -122,7 +122,7 @@ export default {
                     code: this.code.value,
                 });
 
-                fetch('http://localhost:3000/db', {
+                fetch(`${location.origin}/db`, {
                     body,
                     method: 'POST',
                     headers: {
@@ -164,7 +164,7 @@ export default {
                 const id = encodeURIComponent(this.id.value);
                 const code = encodeURIComponent(this.code.value);
 
-                fetch(`http://localhost:3000/db?id=${id}&code=${code}`, {
+                fetch(`${location.origin}/db?id=${id}&code=${code}`, {
                     method: 'GET',
                     headers: {
                         'Accept': 'application/json',
