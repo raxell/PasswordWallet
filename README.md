@@ -1,6 +1,7 @@
 # PasswordWallet
 
-Password management app.
+Password management app.  
+Check the progress at https://github.com/raxell/PasswordWallet/projects/1
 
 ## Usage
 
