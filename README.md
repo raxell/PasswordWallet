@@ -11,19 +11,17 @@ Check the progress at https://github.com/raxell/PasswordWallet/projects/1
 
 ## Usage
 
-To use the app:
-
-* Install the required dependencies
+Install the required dependencies
 ```
 npm install
 ```
 
-* Build CSS, JS files
+Build CSS, JS files
 ```
 npm run build
 ```
 
-* Start the server
+Start the server
 ```
 npm start
 ```
