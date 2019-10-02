@@ -1,4 +1,13 @@
-import * as Crypto from './crypto-utils.js';
+import {
+    bufferToBase64,
+    base64ToBuffer,
+    generateIv,
+    generateSalt,
+    deriveAESKey,
+    deriveVerificationKey,
+    encrypt,
+    decrypt,
+} from './crypto-utils.js';
 
 export const list = () => Object.keys(localStorage);
 
@@ -10,13 +19,13 @@ async function initDb(password) {
     const db = {};
     db.meta = {};
 
-    db.meta.aesSalt = Crypto.bufferToBase64(Crypto.generateSalt());
-    db.meta.verificationSalt = Crypto.bufferToBase64(Crypto.generateSalt());
-    db.meta.iv = Crypto.bufferToBase64(Crypto.generateIv());
-    db.meta.verificationKey = await Crypto.deriveVerificationKey(password, Crypto.base64ToBuffer(db.meta.verificationSalt));
+    db.meta.aesSalt = bufferToBase64(generateSalt());
+    db.meta.verificationSalt = bufferToBase64(generateSalt());
+    db.meta.iv = bufferToBase64(generateIv());
+    db.meta.verificationKey = await deriveVerificationKey(password, base64ToBuffer(db.meta.verificationSalt));
 
-    const aesKey = await Crypto.deriveAESKey(password, Crypto.base64ToBuffer(db.meta.aesSalt));
-    db.entries = await Crypto.encrypt(JSON.stringify({}), aesKey, Crypto.base64ToBuffer(db.meta.iv)); 
+    const aesKey = await deriveAESKey(password, base64ToBuffer(db.meta.aesSalt));
+    db.entries = await encrypt(JSON.stringify({}), aesKey, base64ToBuffer(db.meta.iv)); 
 
     return db;
 }
@@ -28,15 +37,15 @@ export async function Database(name, password) {
 
     let modified = !data ? true : false;
     
-    const verificationKey = await Crypto.deriveVerificationKey(password, Crypto.base64ToBuffer(meta.verificationSalt));
+    const verificationKey = await deriveVerificationKey(password, base64ToBuffer(meta.verificationSalt));
 
     if (verificationKey !== meta.verificationKey) {
         throw new Error('Invalid password');
     }
 
-    const aesKey = await Crypto.deriveAESKey(password, Crypto.base64ToBuffer(meta.aesSalt));
+    const aesKey = await deriveAESKey(password, base64ToBuffer(meta.aesSalt));
 
-    db.entries = JSON.parse(await Crypto.decrypt(db.entries, aesKey, Crypto.base64ToBuffer(meta.iv)));
+    db.entries = JSON.parse(await decrypt(db.entries, aesKey, base64ToBuffer(meta.iv)));
 
     return {
         entries() {
@@ -60,11 +69,11 @@ export async function Database(name, password) {
         },
         async save() {
             if (modified) {
-                meta.iv = Crypto.bufferToBase64(Crypto.generateIv());
-                db.entries = await Crypto.encrypt(JSON.stringify(db.entries), aesKey, Crypto.base64ToBuffer(meta.iv));
+                meta.iv = bufferToBase64(generateIv());
+                db.entries = await encrypt(JSON.stringify(db.entries), aesKey, base64ToBuffer(meta.iv));
                 localStorage.setItem(name, JSON.stringify(db));
                 modified = false;
-                db.entries = JSON.parse(await Crypto.decrypt(db.entries, aesKey, Crypto.base64ToBuffer(meta.iv)));
+                db.entries = JSON.parse(await decrypt(db.entries, aesKey, base64ToBuffer(meta.iv)));
             }
         },
         drop() {
