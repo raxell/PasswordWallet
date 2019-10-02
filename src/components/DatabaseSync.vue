@@ -58,7 +58,7 @@ import * as Crypto from '../crypto-utils.js';
 export default {
     created() {
         if (this.state.action === 'export') {
-            this.code.value = Crypto.randomBytes(6);
+            this.code.value = Crypto.bufferToBase64(Crypto.randomBytes(6));
         }
     },
     props: [

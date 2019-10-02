@@ -1,6 +1,9 @@
 import {
   base64ToBuffer,
   bufferToBase64,
+  generateIv,
+  generateSalt,
+  randomBytes,
 } from '../src/crypto-utils.js'
 
 describe('bufferToBase64', () => {
@@ -24,6 +27,29 @@ describe('base64ToBuffer', () => {
     const base64String = 'YWJjZGVm'
 
     expect(bufferToBase64(base64ToBuffer(base64String))).toBe(base64String)
+  })
+})
+
+describe('randomBytes', () => {
+  it('should return a Uint8Array of the given length', () => {
+    const size = 6
+
+    expect(randomBytes(size)).toEqual(jasmine.any(Uint8Array))
+    expect(randomBytes(size).length).toBe(size)
+  })
+})
+
+describe('generateSalt', () => {
+  it('should return a 32 bytes Uint8Array', () => {
+    expect(generateSalt()).toEqual(jasmine.any(Uint8Array))
+    expect(generateSalt().length).toBe(32)
+  })
+})
+
+describe('generateIv', () => {
+  it('should return a 12 bytes Uint8Array', () => {
+    expect(generateIv()).toEqual(jasmine.any(Uint8Array))
+    expect(generateIv().length).toBe(12)
   })
 })
 

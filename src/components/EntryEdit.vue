@@ -90,7 +90,7 @@ export default {
     },
     methods: {
         generatePassword() {
-            this.password.value = Crypto.randomBytes(24);
+            this.password.value = Crypto.bufferToBase64(Crypto.randomBytes(24));
         },
         validateName() {
             if (this.name.value === '') {
