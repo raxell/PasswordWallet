@@ -1,6 +1,6 @@
 const Path = require('path');
 const Crypto = require('crypto');
-const Hapi = require('hapi');
+const Hapi = require('@hapi/hapi');
 const Inert = require('inert');
 
 const init = async () => {
