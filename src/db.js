@@ -16,18 +16,22 @@ export const exportDb = (name) => localStorage.getItem(name);
 export const importDb = (name, data) => localStorage.setItem(name, data);
 
 async function initDb(password) {
-    const db = {};
-    db.meta = {};
+    const aesSalt = generateSalt();
+    const verificationSalt = generateSalt();
+    const iv = generateIv();
+    const verificationKey = await deriveVerificationKey(password, verificationSalt);
 
-    db.meta.aesSalt = bufferToBase64(generateSalt());
-    db.meta.verificationSalt = bufferToBase64(generateSalt());
-    db.meta.iv = bufferToBase64(generateIv());
-    db.meta.verificationKey = await deriveVerificationKey(password, base64ToBuffer(db.meta.verificationSalt));
+    const meta = {
+        iv: bufferToBase64(iv),
+        aesSalt: bufferToBase64(aesSalt),
+        verificationSalt: bufferToBase64(verificationSalt),
+        verificationKey: bufferToBase64(verificationKey),
+    };
 
-    const aesKey = await deriveAESKey(password, base64ToBuffer(db.meta.aesSalt));
-    db.entries = await encrypt(JSON.stringify({}), aesKey, base64ToBuffer(db.meta.iv)); 
+    const aesKey = await deriveAESKey(password, aesSalt);
+    const entries = await encrypt(JSON.stringify({}), aesKey, iv); 
 
-    return db;
+    return { meta, entries };
 }
 
 export async function Database(name, password) {
