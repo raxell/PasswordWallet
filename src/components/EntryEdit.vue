@@ -50,7 +50,7 @@
 </template>
 
 <script>
-import * as Crypto from '../crypto-utils.js';
+import { bufferToBase64, randomBytes } from '../crypto-utils.js';
 import { RefreshCwIcon, EyeIcon, EyeOffIcon } from 'vue-feather-icons';
 
 export default {
@@ -90,7 +90,7 @@ export default {
     },
     methods: {
         generatePassword() {
-            this.password.value = Crypto.randomBytes(24);
+            this.password.value = bufferToBase64(randomBytes(24));
         },
         validateName() {
             if (this.name.value === '') {

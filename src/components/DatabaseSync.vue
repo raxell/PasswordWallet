@@ -53,12 +53,12 @@
 
 <script>
 import * as Db from '../db.js';
-import * as Crypto from '../crypto-utils.js';
+import { bufferToBase64, randomBytes } from '../crypto-utils.js';
 
 export default {
     created() {
         if (this.state.action === 'export') {
-            this.code.value = Crypto.randomBytes(6);
+            this.code.value = bufferToBase64(randomBytes(6));
         }
     },
     props: [
