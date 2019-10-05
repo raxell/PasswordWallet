@@ -1,6 +1,9 @@
 import {
   base64ToBuffer,
   bufferToBase64,
+  decrypt,
+  deriveAESKey,
+  encrypt,
   generateIv,
   generateSalt,
   randomBytes,
@@ -53,3 +56,72 @@ describe('generateIv', () => {
   })
 })
 
+describe('deriveAESKey', () => {
+  it('should derive a valid 256 bit key for use in AES', async() => {
+    const key = await deriveAESKey('pass', generateSalt())
+
+    expect(key.type).toBe('secret')
+    expect(key.extractable).toBe(false)
+    expect(key.algorithm).toEqual({ name: 'AES-GCM', length: 256 })
+    expect(key.usages).toEqual(['encrypt', 'decrypt'])
+  })
+})
+
+describe('encrypt/decrypt', () => {
+  const password = 'pass'
+  const salt = generateSalt()
+
+  it('same key', async() => {
+    const plaintext = 'sample text'
+    const key = await deriveAESKey(password, salt)
+    const iv = generateIv()
+    const encrypted = await encrypt(plaintext, key, iv)
+
+    expect(await decrypt(encrypted, key, iv)).toBe(plaintext)
+  })
+
+  it('wrong password', async() => {
+    const plaintext = 'sample text'
+    const encKey = await deriveAESKey(password, salt)
+    const decKey = await deriveAESKey('wrong pass', salt)
+    const iv = generateIv()
+    const encrypted = await encrypt(plaintext, encKey, iv)
+
+    try {
+      await decrypt(encrypted, decKey, iv)
+      fail('should throw')
+    } catch (err) {
+      expect(err.name).toBe('OperationError')
+    }
+  })
+
+  it('wrong salt', async() => {
+    const plaintext = 'sample text'
+    const encKey = await deriveAESKey(password, salt)
+    const decKey = await deriveAESKey(password, generateSalt())
+    const iv = generateIv()
+    const encrypted = await encrypt(plaintext, encKey, iv)
+
+    try {
+      await decrypt(encrypted, decKey, iv)
+      fail('should throw')
+    } catch (err) {
+      expect(err.name).toBe('OperationError')
+    }
+  })
+
+  it('wrong iv', async() => {
+    const plaintext = 'sample text'
+    const key = await deriveAESKey(password, salt)
+    const encIv = generateIv()
+    const decIv = generateIv()
+    const encrypted = await encrypt(plaintext, key, encIv)
+
+    try {
+      await decrypt(encrypted, key, decIv)
+      fail('should throw')
+    } catch (err) {
+      expect(err.name).toBe('OperationError')
+    }
+  })
+})
